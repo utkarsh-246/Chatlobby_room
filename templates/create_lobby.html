@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Create chat lobby!{% endblock %}
+
+{% block css  %}
+<link rel="stylesheet" href="/static/style.css">
+<style>
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+        .lobbycode a {
+            font-size: 0.9rem; /* Slightly reduce font size for tablets */
+            color: rgb(175, 75, 77); /* Adjust color for better contrast */
+        }
+    }
+    
+    @media screen and (max-width: 480px) {
+        .lobbycode a {
+            font-size: 0.8rem; /* Further reduce font size for smaller screens */
+            padding: 3px; /* Adjust padding for smaller touch targets */
+            color: rgb(200, 85, 90); /* Brighter color for readability */
+        }
+    
+        .lobbycode a:hover {
+            text-decoration: none; /* Remove underline for simpler UX */
+            font-weight: bold; /* Add emphasis */
+        }
+    }
+    
+</style>
+
+{% endblock %}
+
+{% block h1 %} Create your own lobby {% endblock %}
+
+{% block div %} 
+
+<form method="post" action="{% url 'create_lobby' %}"> {% csrf_token %}
+    
+    <label class="text-lg flex pl-1" for="lobby_name">Name your lobby:</label>
+    <input class="h-10 px-2" type="text" id="lobby_name" name="lobby_name" value="{{ request.POST.lobby_name }}" required>
+
+    <label class="text-lg flex pl-1 mt-5" for="members">Enter the number of members:</label>
+    <input class="h-10 px-2" type="number" id="members" name="members" min="2" max="30" placeholder="2 to 30" value="{{ request.POST.members }}" required>
+
+    <button class="h-10 w-32 bg-red-700 my-5 rounded-xl hover:bg-red-900" type="submit">Done</button>
+
+</form>
+
+{% if lobby_code %}
+    <div class="lobbycode text-lg">
+        <p>Your lobby code: {{ lobby_code }} <br> <a class="text-red-500 hover:text-red-800 hover:underline" href="{% url 'chatlobby' %}">Click here</a> and enter your lobby.</p>
+    </div>
+{% endif %}
+
+{% endblock %}
